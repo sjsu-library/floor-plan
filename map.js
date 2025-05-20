@@ -42,10 +42,19 @@ getQueries();
 
 $(document).ready(function() {
 
-  google.charts.load('current', {
-    packages: ['corechart']
-      }).then(function () {
-        var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1nkYWE6fAV1PGb-YexmtkBOa8NHV4UijWh4e5lM051Q4/gviz/tq?gid=0&headers=1');
+  google.charts.load('current', {packages: ['corechart']});
+  //google.charts.setOnLoadCallback(drawMap);
+  //use timeout instead of callback due to issue with heatmap.it
+  setTimeout(drawMap, 2000);
+
+
+
+});
+})(jQuery);
+
+//drawMap
+function drawMap() {
+  var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1nkYWE6fAV1PGb-YexmtkBOa8NHV4UijWh4e5lM051Q4/gviz/tq?gid=0&headers=1');
     query.send(function (response) {
       if (response.isError()) {
         console.log('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
@@ -74,12 +83,7 @@ $(document).ready(function() {
       buildMap(markers);
       //resizeToolTips();
     });
-  });
-
-
-
-});
-})(jQuery);
+}
 
 //Primary function - called after the JSON file of markers is loaded
 function buildMap (markers) {
